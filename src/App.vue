@@ -1,28 +1,51 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <div > <Navigation /></div>
+    <div style="margin: 2rem 0  0 5rem"> <FilterObject /></div>
+    <div style="margin: 0 5rem 0 5rem"> 
+      <CountryList 
+    v-if="allCounties[0]" 
+    :displayCountries="allCounties"
+    @searchcountry="getCountries($event)"
+     />
+     </div>
+    <div> <FlagScreen /> </div>
   </div>
+ 
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import Navigation from "./components/Navigation.vue"
+import FilterObject from "./components/FilterObject.vue"
+import CountryList from "./components/CountryList.vue"
+import Countries from "./services/countries"
+import FlagScreen from "./components/FlagScreen.vue"
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
-}
-</script>
+    Navigation,
+    FilterObject,
+    CountryList,
+    FlagScreen
+  },
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+  data: () => ({
+    allCounties: []
+  }), 
+ created(){
+   this.getCountries('all')
+  },
+  methods:{
+    async getCountries(value){
+      return await Countries.listCountries(value).then(response=> {
+        this.allCounties = response.data
+      })
+    },
+  },watch:{
+    allCounties(){
+      console.log(this.allCounties)
+    }
+  }
+  
+};
+</script>
