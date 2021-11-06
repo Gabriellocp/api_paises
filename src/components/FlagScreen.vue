@@ -1,42 +1,105 @@
 <template>
     <v-container fluid>
-        <div style="display: flex">
-            <div style="background-color:black">
+        <div style="display: flex; justify-content:center">
+            
                 <v-img 
-                max-height="50%"
-                max-width="50%"
-                :src="country.flags.png"
+                style="margin: 0 1rem 1rem 0"
+                max-height="30rem"
+                max-width="30rem"
+                contain
+                aspect-ratio="2.0"
+                :src="nextInfo.flags.png"
                 >
-
                 </v-img>
-            </div>
+           
             <div>
-                <ul>
-                    <li> Nome: {{country.name.official}} </li>
-                    <li> Capital: {{country.capital}} </li>
-                    <li> Regiao: {{country.region}} </li>
-                    <li> Sub-Região: {{country.name}} </li>
-                    <li> População: {{country.name}} </li>
-                    <li> Línguas: {{country.name}} </li>
+                <ul class="show-info">
+                    <li> Nome: {{nextInfo.name.official}} </li>
+                    <li> Capital: {{nextInfo.capital[0]}} </li>
+                    <li> Regiao: 
+                        <a  v-on:click="goToRegion">
+                        {{nextInfo.region}}
+                        </a> 
+                    </li>
+                    <li> Sub-Região: {{nextInfo.subregion}} </li>
+                    <li> População: {{nextInfo.population}} </li>
+                    <li> Línguas: 
+                        <span 
+                        v-for="(items) in nextInfo.languages"
+                        :key="items"
+                        >
+                        {{items}},
+                        </span> 
+                    </li>
                 </ul>
             </div>
         </div>
-        <div>
+        <div style="margin:auto">
             <p> Países Vizinhos </p>
+            <CountryList 
+            v-if="neighbors"
+            :displayCountries="neighbors"
+            :maxNumber="3"
+            v-on:change-screen="changeCountry"
+            />
         </div>
     </v-container>
    
 </template>
 
 <script>
+import Countries from "../services/countries"
+import CountryList from "./CountryList.vue"
 export default {
     props:{
-        country: Array
+        info: Object
+    },
+    components:{
+        CountryList
     },
     data() {
         return {
-            neighbors: []
+            neighbors: [],
+            nextInfo: Object
         }
     },
+    mounted(){
+        this.nextInfo = this.info
+        this.getNeighbors()
+    },
+    methods:{
+       getNeighbors(){
+        this.neighbors = []
+        this.nextInfo?.borders.forEach(element => {
+            Countries.listCountries(`alpha/${element}`)
+            .then(response=>{
+                 this.neighbors.push(response.data[0])
+             })
+        
+        });
+       },
+       changeCountry(val){
+        this.neighbors = []
+        this.nextInfo = val
+        this.getNeighbors()
+       }, 
+       goToRegion(){
+           console.log(this.nextInfo.region)
+           this.$emit('region-filter', this.nextInfo.region)
+       }
+    }
 }
 </script>
+
+<style>
+.show-info{
+    list-style-type: none;
+}
+.show-info li{
+    font-size: 20px;
+}
+div p{
+    font-size: 22px;
+    text-align: center;
+}
+</style>

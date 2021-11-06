@@ -1,7 +1,7 @@
 <template>
     <div data-app>
         <v-container fluid>
-            <v-row align="center">
+            <v-row align="center" style="align-items: center;justify-content: center;">
                 <v-col cols="10" sm="3">
                     <v-select
                     v-model="firstfilter"
@@ -45,6 +45,7 @@
                     color="#6D2080"
                     :disabled=validateSearch
                     v-on:click="searchCountry()"
+                    er
                     >
                     Pesquisar
                     </v-btn>
