@@ -7,11 +7,11 @@
             max-width="20rem"
             contain
             aspect-ratio="1.5"
-            v-on:click="redirectToCountry(displayCountries[index+(maxNumber*(page-1))].name.official)" 
+            v-on:click="redirectToCountry(country.name.official)" 
             class="flag-image" 
-            v-for="(country,index) in maxNumber"
+            v-for="(country,index) in showMaxNumber"
             :key="index"
-            :src="displayCountries[index+(maxNumber*(page-1))].flags.png"
+            :src="country.flags.png"
             > </v-img>
         
             <div class="text-center">
@@ -19,6 +19,7 @@
                 color="#6D2080"
                 v-model="page"
                 :length="Math.ceil(displayCountries.length/maxNumber)"
+                v-on:input="showCountries()"
                 ></v-pagination>
             </div>
         </v-row>
@@ -30,12 +31,12 @@
 export default {
     props:{
         displayCountries: Array,
-        
     },
     data() {
         return {
             page: 1,
             maxNumber: 10,
+            showMaxNumber: []
         }
     },
     methods:{
@@ -43,8 +44,21 @@ export default {
             console.log(name)
             this.$emit('change-screen', name)
         },
-    },
+        showCountries(){
+            
+            this.showMaxNumber = this.displayCountries.slice((this.page-1)*this.maxNumber,this.page*this.maxNumber)
+            
 
+        }
+    },
+    mounted(){
+        this.showCountries()
+    },
+    watch:{
+        displayCountries(){
+            this.showCountries()
+        }
+    }
    
 }
 </script>

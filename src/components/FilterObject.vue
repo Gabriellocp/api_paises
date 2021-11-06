@@ -66,9 +66,9 @@ export default {
         filterItems:[
            {name:"Região", value: "region"},
            {name:"Capital", value: "capital"},
-           {name:"Língua", value: "language"},
-           {name:"País", value: "country"},
-           {name:"Código de Ligação", value: "callcode"},
+           {name:"Língua", value: "lang"},
+           {name:"País", value: "name"},
+           {name:"Código de Ligação", value: "callingcode"},
         ],
         secondFilter: "",
         regionValues:[
@@ -91,8 +91,8 @@ export default {
             this.isRegion = false)
         },
         searchCountry(){
-            this.$emit('searchcountry', `${this.firstfilter['value']}/${this.secondFilter}`)
-            console.log(`${this.firstfilter['value']}/${this.secondFilter}`)
+            this.$emit("searchcountry", `${this.firstfilter['value']}/${this.secondFilter}`)
+           
         }
     },
     computed:{
