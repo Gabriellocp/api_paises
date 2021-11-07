@@ -14,8 +14,8 @@
            
             <div>
                 <ul class="show-info">
-                    <li> Nome: {{nextInfo.name.official}} </li>
-                    <li> Capital: {{nextInfo.capital[0]}} </li>
+                    <li> Nome: {{nextInfo.name}} </li>
+                    <li> Capital: {{nextInfo.capital}} </li>
                     <li> Regiao: 
                         <a class="stylelink"
                         v-on:click="goToRegion">
@@ -29,7 +29,7 @@
                         v-for="(items) in nextInfo.languages"
                         :key="items"
                         >
-                        {{items}},
+                        {{items["nativeName"]}},
                         </span> 
                     </li>
                 </ul>
