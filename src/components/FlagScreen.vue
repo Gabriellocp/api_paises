@@ -17,7 +17,8 @@
                     <li> Nome: {{nextInfo.name.official}} </li>
                     <li> Capital: {{nextInfo.capital[0]}} </li>
                     <li> Regiao: 
-                        <a  v-on:click="goToRegion">
+                        <a class="stylelink"
+                        v-on:click="goToRegion">
                         {{nextInfo.region}}
                         </a> 
                     </li>
@@ -39,7 +40,7 @@
             <CountryList 
             v-if="neighbors"
             :displayCountries="neighbors"
-            :maxNumber="3"
+            :maxNumber="12"
             v-on:change-screen="changeCountry"
             />
         </div>
@@ -101,5 +102,9 @@ export default {
 div p{
     font-size: 22px;
     text-align: center;
+}
+.stylelink:hover{
+    color:#6D2080;
+    cursor: pointer;
 }
 </style>
